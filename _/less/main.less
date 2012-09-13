@@ -1,0 +1,25 @@
+@import "bootstrap.less";
+
+.container {
+	margin: 30px auto;
+	width: 1000px;
+}
+
+.word-guess {
+	
+	input {
+		width: 20px;
+		border-radius: 0;
+		border-right-width: 0;
+		
+		&:first-child {
+			.border-top-left-radius(3px);
+			.border-bottom-left-radius(3px);
+		}
+		&:last-child {
+			border-right-width: 1px;
+			.border-top-right-radius(3px);
+			.border-bottom-right-radius(3px);
+		}
+	}
+}
