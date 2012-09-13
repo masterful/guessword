@@ -8,16 +8,33 @@
 <body>
 	<!-- Content -->
 	<div class="container">
-		Coming soon!
-		<form>
-			<div class="input-append guess-word">
-				<input type="text" autofocus />
-				<input type="text" />
-				<input type="text" />
-				<input type="text" />
-				<input type="text" />
+		<header>
+			<h1>Guessword</h1>
+		</header>
+		<section class="guess-word">
+			<form>
+				<div class="input-append">
+					<input type="text" autofocus />
+					<input type="text" />
+					<input type="text" />
+					<input type="text" />
+					<input type="text" />
+				</div>
+			</form>
+			<div class="progress progress-striped active">
+				<div class="bar" style="width: 100%;"></div>
 			</div>
-		</form>
+		</section>
+		<section class="guessed-words">
+			<table>
+				<thead>
+					<tr><th>Word</th>
+						<th>Correct</th></tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</section>
 	</div>
 	<!-- Scripts -->
 	<script type="text/javascript" src="/_/js/main-ck.js"></script>

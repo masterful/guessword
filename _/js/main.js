@@ -11,7 +11,9 @@ $(function() {
 		var   key		= e.keyCode
 			, input		= $('.guess-word input[value=]')
 			, colour
-			, letter;
+			, letter
+			, word		= ''
+			;
 		
 		// Check if this is a key we want to display in the box
 		if ( 64 < key && key < 91 ) {
@@ -36,6 +38,30 @@ $(function() {
 			if ( ! input.length ) {
 				// full boxes require clearing the last one:
 				$('.guess-word input:last-child').val('').removeClass('good bad').focus();
+			}
+		}
+		if (13 === key ) {
+			// make sure we have all the boxes filled
+			if ( ! input.length ) {
+				// processing
+				$('.guess-word .progress').show();
+				// perfect, but is it a valid word?
+// TO DO - assume yes for now
+				// okay - add it to our list with the amount
+				$('.guess-word input').each(function(i, input) {
+					word	+= $(input).val();
+				}).val('').removeClass('good bad').first().focus();
+				$('.guessed-words tbody').append(
+					$('<tr>').append(
+							$('<td>').append(word)
+						).append(
+							$('<td>').append('?')
+						)
+				);
+				// done processing
+				$('.guess-word .progress').hide();
+			}else{
+				// hmm, perhaps tell them we need a full word
 			}
 		}
 	});

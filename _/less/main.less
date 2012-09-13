@@ -8,9 +8,14 @@
 .guess-word {
 	
 	input {
-		width: 10px;
+		width: 30px;
+		height: 50px;
+		line-height: 50px;
+		font-size: 30px;
 		border-radius: 0;
 		border-right-width: 0;
+		text-align: center;
+		padding: 0;
 		
 		&:first-child {
 			.border-top-left-radius(3px);
@@ -28,5 +33,17 @@
 		&.bad {
 			background: #ffeeee;
 		}
+	}
+	
+	.progress {
+		width: 300px;
+		display: none;
+	}
+}
+
+.guessed-words {
+	
+	table {
+		width: 300px;
 	}
 }

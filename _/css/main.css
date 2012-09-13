@@ -4884,9 +4884,14 @@ a.badge:hover {
   width: 1000px;
 }
 .guess-word input {
-  width: 10px;
+  width: 30px;
+  height: 50px;
+  line-height: 50px;
+  font-size: 30px;
   border-radius: 0;
   border-right-width: 0;
+  text-align: center;
+  padding: 0;
 }
 .guess-word input:first-child {
   -webkit-border-top-left-radius: 3px;
@@ -4910,4 +4915,11 @@ a.badge:hover {
 }
 .guess-word input.bad {
   background: #ffeeee;
+}
+.guess-word .progress {
+  width: 300px;
+  display: none;
+}
+.guessed-words table {
+  width: 300px;
 }
