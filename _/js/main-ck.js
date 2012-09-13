@@ -1,0 +1,1 @@
+$(function(){$("body").on("keypress",function(e){e.preventDefault();var t=e.keyCode,n=["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],r=$(".guess-word input[value=]").first();64<t&&t<91&&(t+=32);96<t&&t<123&&r.val(n[t-97]).focus()})});

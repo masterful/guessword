@@ -4883,12 +4883,12 @@ a.badge:hover {
   margin: 30px auto;
   width: 1000px;
 }
-.word-guess input {
-  width: 20px;
+.guess-word input {
+  width: 10px;
   border-radius: 0;
   border-right-width: 0;
 }
-.word-guess input:first-child {
+.guess-word input:first-child {
   -webkit-border-top-left-radius: 3px;
   -moz-border-radius-topleft: 3px;
   border-top-left-radius: 3px;
@@ -4896,7 +4896,7 @@ a.badge:hover {
   -moz-border-radius-bottomleft: 3px;
   border-bottom-left-radius: 3px;
 }
-.word-guess input:last-child {
+.guess-word input:last-child {
   border-right-width: 1px;
   -webkit-border-top-right-radius: 3px;
   -moz-border-radius-topright: 3px;
