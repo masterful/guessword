@@ -4905,3 +4905,9 @@ a.badge:hover {
   -moz-border-radius-bottomright: 3px;
   border-bottom-right-radius: 3px;
 }
+.guess-word input.good {
+  background: #f5ffef;
+}
+.guess-word input.bad {
+  background: #ffeeee;
+}
