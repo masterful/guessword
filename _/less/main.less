@@ -5,7 +5,22 @@
 	width: 1000px;
 }
 
+.letter.used {
+	background: #eeeeee;
+}		
+.letter.good {
+	background: #f5ffef;
+}
+.letter.bad {
+	background: #ffeeee;
+}
+
+.alphabet {
+	text-align: center;
+}
+
 .guess-word {
+	text-align: center;
 	
 	input {
 		width: 30px;
@@ -26,13 +41,6 @@
 			.border-top-right-radius(3px);
 			.border-bottom-right-radius(3px);
 		}
-		
-		&.good {
-			background: #f5ffef;
-		}
-		&.bad {
-			background: #ffeeee;
-		}
 	}
 	
 	.progress {
@@ -42,8 +50,18 @@
 }
 
 .guessed-words {
+	text-align: center;
 	
 	table {
 		width: 300px;
 	}
+}
+
+.letter {
+	display: inline-block;
+	width: 20px;
+	height: 30px;
+	line-height: 30px;
+	font-size: 20px;
+	text-align: center;
 }
