@@ -4883,22 +4883,15 @@ a.badge:hover {
   margin: 30px auto;
   width: 1000px;
 }
-.letter.used {
-  background: #eeeeee;
-}
-.letter.good {
-  background: #f5ffef;
-}
-.letter.bad {
-  background: #ffeeee;
-}
 .alphabet {
   text-align: center;
+  margin-bottom: 10px;
 }
 .guess-word {
   text-align: center;
 }
-.guess-word input {
+.guess-word input,
+.guess-word input.fixed {
   width: 30px;
   height: 50px;
   line-height: 50px;
@@ -4908,7 +4901,8 @@ a.badge:hover {
   text-align: center;
   padding: 0;
 }
-.guess-word input:first-child {
+.guess-word input:first-child,
+.guess-word input.fixed:first-child {
   -webkit-border-top-left-radius: 3px;
   -moz-border-radius-topleft: 3px;
   border-top-left-radius: 3px;
@@ -4916,7 +4910,8 @@ a.badge:hover {
   -moz-border-radius-bottomleft: 3px;
   border-bottom-left-radius: 3px;
 }
-.guess-word input:last-child {
+.guess-word input:last-child,
+.guess-word input.fixed:last-child {
   border-right-width: 1px;
   -webkit-border-top-right-radius: 3px;
   -moz-border-radius-topright: 3px;
@@ -4942,4 +4937,22 @@ a.badge:hover {
   line-height: 30px;
   font-size: 20px;
   text-align: center;
+}
+.letter.used {
+  background: #eeeeee;
+}
+.letter.good {
+  background: #f5ffef;
+}
+.letter.bad {
+  background: #ff9898;
+  background: #ffb7b7;
+}
+.letter.bad.fixed {
+  background-color: #ff9898;
+  background-image: -webkit-gradient(linear, 0 100%, 100% 0, color-stop(0.25, rgba(255, 255, 255, 0.15)), color-stop(0.25, transparent), color-stop(0.5, transparent), color-stop(0.5, rgba(255, 255, 255, 0.15)), color-stop(0.75, rgba(255, 255, 255, 0.15)), color-stop(0.75, transparent), to(transparent));
+  background-image: -webkit-linear-gradient(135deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+  background-image: -moz-linear-gradient(135deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+  background-image: -o-linear-gradient(135deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+  background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
 }

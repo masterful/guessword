@@ -1,11 +1,18 @@
 var guessword	= {
-	  badLetters	: []
-	, goodLetters	: []
-	, usedLetters	: []
-	, actualWord	: 'COATS'
+	  alphabet				: "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('')
+	, badLetters			: []
+	, goodLetters			: []
+	, usedLetters			: []
+	, assumedBadLetters		: []
+	, assumedGoodLetters	: []
+	, actualWord			: "COATS"
 };
 
 $(function() {
+	// Set up alphabet at the top
+	$.each(guessword.alphabet, function(i, letter) {
+		$('.alphabet').append('<span class="letter letter-'+letter+'">'+letter+'</span>');
+	});
 	// Oh yeah
 	$('body').on('keydown', function(e) {
 		// Ignore special keys:
@@ -31,10 +38,11 @@ $(function() {
 			key	+= 32;
 		}
 		if ( 96 < key && key < 123 ) {
-			letter		= ([ 'A','B','C','D','E','F','G','H','I','J','K','L','M'
-							,'N','O','P','Q','R','S','T','U','V','W','X','Y','Z' ])[key-97];
-			colour		= -1 < guessword.badLetters.indexOf(letter) ? 'bad'
-						: -1 < guessword.goodLetters.indexOf(letter) ? 'good'
+			letter		= guessword.alphabet[key-97];
+			colour		= -1 < guessword.badLetters.indexOf(letter) ? 'bad fixed'
+						: -1 < guessword.goodLetters.indexOf(letter) ? 'good fixed'
+						: -1 < guessword.assumedBadLetters.indexOf(letter) ? 'bad'
+						: -1 < guessword.assumedGoodLetters.indexOf(letter) ? 'good'
 						: -1 < guessword.usedLetters.indexOf(letter) ? 'used'
 						: '';
 			// letter - array the value in:
@@ -45,10 +53,10 @@ $(function() {
 		}
 		if ( 8 === key ) {
 			// backspace
-			input.first().prev().val('').removeClass('used good bad').focus();
+			input.first().prev().val('').removeClass('fixed used good bad').focus();
 			if ( ! input.length ) {
 				// full boxes require clearing the last one:
-				$('.guess-word input:last-child').val('').removeClass('used good bad').focus();
+				$('.guess-word input:last-child').val('').removeClass('fixed used good bad').focus();
 			}
 		}
 		if (13 === key ) {
@@ -62,9 +70,10 @@ $(function() {
 				letters	= guessword.actualWord.split('');
 				$('.guess-word input').each(function(i, input) {
 					letter	= $(input).val();
-					colour	= -1 < guessword.badLetters.indexOf(letter) ? ' bad'
-							: -1 < guessword.goodLetters.indexOf(letter) ? ' good'
-							: -1 < guessword.usedLetters.indexOf(letter) ? ' used'
+					colour	= -1 < guessword.badLetters.indexOf(letter) ? ' bad fixed'
+							: -1 < guessword.goodLetters.indexOf(letter) ? ' good fixed'
+							: -1 < guessword.assumedBadLetters.indexOf(letter) ? ' bad'
+							: -1 < guessword.assumedGoodLetters.indexOf(letter) ? ' good'
 							: '';
 					word	+= letter;
 					guess	+= '<span class="letter letter-' + letter + colour + '">' + letter + '</span>';
@@ -73,11 +82,11 @@ $(function() {
 						letters.splice(letters.indexOf(letter),1);
 					}
 					if ( -1 < guessword.goodLetters.indexOf(letter) ) {
-						known	+= letter;
+						known.push(letter);
 					}else{
-						unknown	+= letter;
+						unknown.push(letter);
 					}
-				}).val('').removeClass('used good bad').first().focus();
+				}).val('').removeClass('fixed used good bad').first().focus();
 				$('.guessed-words tbody').append(
 					$('<tr>').append(
 							$('<td>').append(guess)
@@ -90,15 +99,15 @@ $(function() {
 					for (i in unknown) {
 						letter	= unknown[i];
 						if ( 0 > guessword.badLetters.indexOf(letter) ) {
-							guessword.badLetters += letter;
-							$('.letter-'+letter).removeClass('used').addClass('bad');
+							guessword.badLetters.push(letter);
+							$('.letter-'+letter).removeClass('used').addClass('fixed bad');
 						}
 					}
 				}else{
 					for (i in unknown) {
 						letter	= unknown[i];
 						if ( 0 > guessword.usedLetters.indexOf(letter) ) {
-							guessword.usedLetters += letter;
+							guessword.usedLetters.push(letter);
 							$('.letter-'+letter).addClass('used');
 						}
 					}
@@ -107,6 +116,44 @@ $(function() {
 				$('.guess-word .progress').hide();
 			}else{
 				// hmm, perhaps tell them we need a full word
+			}
+		}
+	}).on('click','.letter',function(e) {
+		// Just in case it's a link ?
+		e.preventDefault();
+		var	  target	= $(e.target)
+			, letter	= target.html();
+		
+		// Is this unchangeable?
+		if (target.hasClass('fixed')) {
+			return;
+		}
+		// Toggle through
+		if (target.hasClass('used')) {
+			$('.letter-'+letter).removeClass('used').addClass('good');
+			if (-1 < guessword.assumedBadLetters.indexOf(letter)) {
+				guessword.assumedBadLetters.splice(guessword.assumedBadLetters.indexOf(letter),1);
+			}
+			if (0 > guessword.assumedGoodLetters.indexOf(letter)) {
+				guessword.assumedGoodLetters.push(letter);
+			}
+		}else
+		if (target.hasClass('good')) {
+			$('.letter-'+target.html()).removeClass('good').addClass('bad');
+			if (-1 < guessword.assumedGoodLetters.indexOf(letter)) {
+				guessword.assumedGoodLetters.splice(guessword.assumedGoodLetters.indexOf(letter),1);
+			}
+			if (0 > guessword.assumedBadLetters.indexOf(letter)) {
+				guessword.assumedBadLetters.push(letter);
+			}
+		}else
+		if (target.hasClass('bad')) {
+			$('.letter-'+target.html()).removeClass('bad').addClass('used');
+			if (-1 < guessword.assumedBadLetters.indexOf(letter)) {
+				guessword.assumedBadLetters.splice(guessword.assumedBadLetters.indexOf(letter),1);
+			}
+			if (-1 < guessword.assumedGoodLetters.indexOf(letter)) {
+				guessword.assumedGoodLetters.splice(guessword.assumedGoodLetters.indexOf(letter),1);
 			}
 		}
 	});
