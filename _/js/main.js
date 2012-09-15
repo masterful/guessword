@@ -1,12 +1,16 @@
-var guessword	= {
-	  alphabet				: "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('')
-	, badLetters			: []
-	, goodLetters			: []
-	, usedLetters			: []
-	, assumedBadLetters		: []
-	, assumedGoodLetters	: []
-	, actualWord			: "COATS"
-};
+//@codekit-prepend "settings.js"
+
+var   guessword		= {
+		  alphabet				: "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('')
+		, badLetters			: []
+		, goodLetters			: []
+		, usedLetters			: []
+		, assumedBadLetters		: []
+		, assumedGoodLetters	: []
+		, actualWord			: "COATS"
+	}
+	, WORDNIK_URL	= 'http://api.wordnik.com/v4/word.json/'
+	, WORDNIK_ARGS	= '/definitions?limit=1&api_key='+WORDNIK_API_KEY+'&callback=?';
 
 $(function() {
 	// Set up alphabet at the top
@@ -64,7 +68,6 @@ $(function() {
 			if ( ! input.length ) {
 				// processing
 				$('.guess-word .progress').show();
-				// perfect, but is it a valid word?
 // TO DO - assume yes for now
 				// okay - add it to our list with the amount
 				letters	= guessword.actualWord.split('');
@@ -87,6 +90,10 @@ $(function() {
 						unknown.push(letter);
 					}
 				}).val('').removeClass('fixed used good bad').first().focus();
+				// but is it a valid word?
+				$.getJSON(WORDNIK_URL+word+WORDNIK_ARGS, function(d) {
+					console.log(d);
+				});
 				$('.guessed-words tbody').append(
 					$('<tr>').append(
 							$('<td>').append(guess)
