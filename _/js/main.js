@@ -238,3 +238,6 @@ function refresh_word() {
 		}
 	});
 }
+$(function() {
+	$('button.refresh').on('click', refresh_word);
+});
