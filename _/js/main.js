@@ -70,7 +70,6 @@ $(function() {
 			if ( ! input.length ) {
 				// processing
 				$('.guess-word .progress').show();
-// TO DO - assume yes for now
 				// okay - add it to our list with the amount
 				letters	= guessword.actualWord.split('');
 				$('.guess-word input').each(function(i, input) {
@@ -79,6 +78,7 @@ $(function() {
 							: -1 < guessword.goodLetters.indexOf(letter) ? ' good fixed'
 							: -1 < guessword.assumedBadLetters.indexOf(letter) ? ' bad'
 							: -1 < guessword.assumedGoodLetters.indexOf(letter) ? ' good'
+							: -1 < guessword.usedLetters.indexOf(letter) ? ' used'
 							: '';
 					word	+= letter;
 					guess	+= '<span class="letter letter-' + letter + colour + '">' + letter + '</span>';
