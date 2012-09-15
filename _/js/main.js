@@ -7,13 +7,16 @@ var   guessword		= {
 		, usedLetters			: []
 		, assumedBadLetters		: []
 		, assumedGoodLetters	: []
-		, actualWord			: "COATS"
+		, actualWord			: ""
 	}
-	, WORDNIK_URL	= 'http://api.wordnik.com/v4/word.json/'
-	, WORDNIK_ARGS	= '/definitions?limit=1&api_key='+WORDNIK_API_KEY+'&callback=?'
+	, WORDNIK_URL		= 'http://api.wordnik.com/v4'
+	, WORDNIK_DEF_API	= '/word.json/'
+	, WORDNIK_DEF_ARGS	= '/definitions?limit=1&api_key='+WORDNIK_API_KEY+'&callback=?'
+	, WORDNIK_RND		= '/words.json/randomWord?maxLength=5&api_key='+WORDNIK_API_KEY+'&callback=?'
 	;
 
 $(function() {
+
 	// Set up alphabet at the top
 	$.each(guessword.alphabet, function(i, letter) {
 		$('.alphabet').append('<span class="letter letter-'+letter+'">'+letter+'</span>');
@@ -94,44 +97,53 @@ $(function() {
 				}).val('').removeClass('fixed used good bad').first().focus();
 				// but is it a valid word?
 				$.ajax({
-					  url		: WORDNIK_URL+word+WORDNIK_ARGS
+					  url		: WORDNIK_URL+WORDNIK_DEF_API+word.toLowerCase()+WORDNIK_DEF_ARGS
 					, type		: 'GET'
 					, dataType	: 'jsonp'
 					, cache		: true
 					, error		: function(xhr, txt, err) {
 						console.log(txt);
+						// done processing
+						$('.guess-word .progress').hide();
 					}
 					, success	: function(d) {
-						console.log(d);
+						if ( 1 > d.length ) {
+							// Invalid word
+							console.log('Invalid word: ' + word);
+							// done processing
+							$('.guess-word .progress').hide();
+						}else{
+							console.log('Valid word: ' + word);
+							$('.guessed-words tbody').append(
+								$('<tr>').append(
+										$('<td>').append(guess)
+									).append(
+										$('<td>').append(correct)
+									)
+							);
+							// Did we get any other letters automatically?
+							if ( correct === known.length ) {
+								for (i in unknown) {
+									letter	= unknown[i];
+									if ( 0 > guessword.badLetters.indexOf(letter) ) {
+										guessword.badLetters.push(letter);
+										$('.letter-'+letter).removeClass('used').addClass('fixed bad');
+									}
+								}
+							}else{
+								for (i in unknown) {
+									letter	= unknown[i];
+									if ( 0 > guessword.usedLetters.indexOf(letter) ) {
+										guessword.usedLetters.push(letter);
+										$('.letter-'+letter).addClass('used');
+									}
+								}
+							}
+							// done processing
+							$('.guess-word .progress').hide();
+						}
 					}
 				});
-				$('.guessed-words tbody').append(
-					$('<tr>').append(
-							$('<td>').append(guess)
-						).append(
-							$('<td>').append(correct)
-						)
-				);
-				// Did we get any other letters automatically?
-				if ( correct === known.length ) {
-					for (i in unknown) {
-						letter	= unknown[i];
-						if ( 0 > guessword.badLetters.indexOf(letter) ) {
-							guessword.badLetters.push(letter);
-							$('.letter-'+letter).removeClass('used').addClass('fixed bad');
-						}
-					}
-				}else{
-					for (i in unknown) {
-						letter	= unknown[i];
-						if ( 0 > guessword.usedLetters.indexOf(letter) ) {
-							guessword.usedLetters.push(letter);
-							$('.letter-'+letter).addClass('used');
-						}
-					}
-				}
-				// done processing
-				$('.guess-word .progress').hide();
 			}else{
 				// hmm, perhaps tell them we need a full word
 			}
@@ -176,3 +188,53 @@ $(function() {
 		}
 	});
 });
+
+function wordnik(word) {
+	$.ajax({
+		  url		: WORDNIK_URL+WORDNIK_DEF_API+word.toLowerCase()+WORDNIK_DEF_ARGS
+		, type		: 'GET'
+		, dataType	: 'jsonp'
+		, cache		: true
+		, error		: function(xhr, txt, err) {
+			console.log(txt);
+		}
+		, success	: function(d) {
+			console.log(d);
+		}
+	});
+}
+
+function refresh_word() {
+	$('.guess-word .progress').show();
+	$.ajax({
+		  url		: WORDNIK_URL+WORDNIK_RND
+		, type		: 'GET'
+		, dataType	: 'jsonp'
+		, cache		: true
+		, error		: function(xhr, txt, err) {
+			console.log(txt);
+			// done processing
+			$('.guess-word .progress').hide();
+		}
+		, success	: function(d) {
+			var word	= d.word.toUpperCase();
+			// Check for double letters
+			if (word[0] === word[1]
+			||	word[0] === word[2]
+			||	word[0] === word[3]
+			||	word[0] === word[4]
+			||	word[1] === word[2]
+			||	word[1] === word[3]
+			||	word[1] === word[4]
+			||	word[2] === word[3]
+			||	word[2] === word[4]
+			||	word[3] === word[4]) {
+				// One of the letters is a double letter, redo.
+				console.log('Rejected double letter word: ' + word);
+				return refresh_word();
+			}
+			guessword.actualWord	= word;
+			$('.guess-word .progress').hide();
+		}
+	});
+}

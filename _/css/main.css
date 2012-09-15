@@ -4922,6 +4922,7 @@ a.badge:hover {
 }
 .guess-word .progress {
   width: 300px;
+  margin: 0 auto;
   display: none;
 }
 .guessed-words {
