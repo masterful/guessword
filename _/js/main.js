@@ -12,7 +12,12 @@ var   guessword		= {
 	, WORDNIK_URL		= 'http://api.wordnik.com/v4'
 	, WORDNIK_DEF_API	= '/word.json/'
 	, WORDNIK_DEF_ARGS	= '/definitions?limit=1&api_key='+WORDNIK_API_KEY+'&callback=?'
-	, WORDNIK_RND		= '/words.json/randomWord?maxLength=5&api_key='+WORDNIK_API_KEY+'&callback=?'
+	, WORDNIK_RND		= '/words.json/randomWord?hasDictionaryDef=true' +
+							'&minLength=5&maxLength=5' +
+							'&excludePartOfSpeech=abbreviation,conjunction,affix,suffix' +
+								',noun-posessive,family-name,given-name' +
+								',proper-noun,proper-noun-plural,proper-noun-posessive' +
+							'&api_key='+WORDNIK_API_KEY+'&callback=?'
 	;
 
 $(function() {
@@ -207,6 +212,7 @@ function wordnik(word) {
 		}
 		, success	: function(d) {
 			console.log(d);
+			return d.text;
 		}
 	});
 }
@@ -240,11 +246,16 @@ function refresh_word() {
 				console.log('Rejected double letter word: ' + word);
 				return refresh_word();
 			}
-			guessword.actualWord	= word;
+			guessword.actualWord			= word;
+			guessword.badLetters			= [];
+			guessword.goodLetters			= [];
+			guessword.usedLetters			= [];
+			guessword.assumedBadLetters		= [];
+			guessword.assumedGoodLetters	= [];
 			$('.guessed-words tbody').html('');
 			$('.guess-word input').val('').first().focus();
 			$('.letter').removeClass('fixed used good bad');
-			$('.revealed').html('');
+			$('.revealed,.definition').html('');
 			$('.guess-word .progress').hide();
 		}
 	});
@@ -252,6 +263,24 @@ function refresh_word() {
 $(function() {
 	$('button.refresh').on('click', refresh_word);
 	$('button.reveal').on('click', function(e) {
-		$('.revealed').html(guessword.actualWord);
+		// processing
+		$('.guess-word .progress').show();
+		$.ajax({
+			  url		: WORDNIK_URL+WORDNIK_DEF_API+guessword.actualWord.toLowerCase()+WORDNIK_DEF_ARGS
+			, type		: 'GET'
+			, dataType	: 'jsonp'
+			, cache		: true
+			, error		: function(xhr, txt, err) {
+				console.log(txt);
+				// done processing
+				$('.guess-word .progress').hide();
+			}
+			, success	: function(d) {
+				$('.revealed').html(guessword.actualWord);
+				$('.definition').html(d[0] ? d[0].text : 'Unknown');
+				// done processing
+				$('.guess-word .progress').hide();
+			}
+		});
 	});
 });
