@@ -10,7 +10,8 @@ var   guessword		= {
 		, actualWord			: "COATS"
 	}
 	, WORDNIK_URL	= 'http://api.wordnik.com/v4/word.json/'
-	, WORDNIK_ARGS	= '/definitions?limit=1&api_key='+WORDNIK_API_KEY+'&callback=?';
+	, WORDNIK_ARGS	= '/definitions?limit=1&api_key='+WORDNIK_API_KEY+'&callback=?'
+	;
 
 $(function() {
 	// Set up alphabet at the top
@@ -34,6 +35,7 @@ $(function() {
 			, correct	= 0
 			, known		= []
 			, unknown	= []
+			, i
 			;
 		
 		// Check if this is a key we want to display in the box
@@ -91,8 +93,17 @@ $(function() {
 					}
 				}).val('').removeClass('fixed used good bad').first().focus();
 				// but is it a valid word?
-				$.getJSON(WORDNIK_URL+word+WORDNIK_ARGS, function(d) {
-					console.log(d);
+				$.ajax({
+					  url		: WORDNIK_URL+word+WORDNIK_ARGS
+					, type		: 'GET'
+					, dataType	: 'jsonp'
+					, cache		: true
+					, error		: function(xhr, txt, err) {
+						console.log(txt);
+					}
+					, success	: function(d) {
+						console.log(d);
+					}
 				});
 				$('.guessed-words tbody').append(
 					$('<tr>').append(
