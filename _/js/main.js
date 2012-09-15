@@ -89,6 +89,7 @@ $(function() {
 						correct ++;
 						letters.splice(letters.indexOf(letter),1);
 					}
+					// 
 					if ( -1 < guessword.goodLetters.indexOf(letter) ) {
 						known.push(letter);
 					}else{
@@ -114,6 +115,12 @@ $(function() {
 							$('.guess-word .progress').hide();
 						}else{
 							console.log('Valid word: ' + word);
+							// Do we have the word?
+							if ( 5 === correct ) {
+								if (word === guessword.actualWord) {
+									correct	= 'Winner!';
+								}
+							}
 							$('.guessed-words tbody').append(
 								$('<tr>').append(
 										$('<td>').append(guess)
@@ -234,10 +241,17 @@ function refresh_word() {
 				return refresh_word();
 			}
 			guessword.actualWord	= word;
+			$('.guessed-words tbody').html('');
+			$('.guess-word input').val('').first().focus();
+			$('.letter').removeClass('fixed used good bad');
+			$('.revealed').html('');
 			$('.guess-word .progress').hide();
 		}
 	});
 }
 $(function() {
 	$('button.refresh').on('click', refresh_word);
+	$('button.reveal').on('click', function(e) {
+		$('.revealed').html(guessword.actualWord);
+	});
 });
