@@ -199,6 +199,7 @@ $(function() {
 			}
 		}
 	});
+	refresh_word();
 });
 
 function wordnik(word) {
@@ -223,7 +224,7 @@ function refresh_word() {
 		  url		: WORDNIK_URL+WORDNIK_RND
 		, type		: 'GET'
 		, dataType	: 'jsonp'
-		, cache		: true
+		, cache		: false
 		, error		: function(xhr, txt, err) {
 			console.log(txt);
 			// done processing
