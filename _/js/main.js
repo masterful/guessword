@@ -242,9 +242,14 @@ function refresh_word() {
 			||	word[1] === word[4]
 			||	word[2] === word[3]
 			||	word[2] === word[4]
-			||	word[3] === word[4]) {
+			||	word[3] === word[4]
+			||	0 > guessword.alphabet.indexOf(word[0])
+			||	0 > guessword.alphabet.indexOf(word[1])
+			||	0 > guessword.alphabet.indexOf(word[2])
+			||	0 > guessword.alphabet.indexOf(word[3])
+			||	0 > guessword.alphabet.indexOf(word[4])) {
 				// One of the letters is a double letter, redo.
-				console.log('Rejected double letter word: ' + word);
+				console.log('Rejected word: ' + word);
 				return refresh_word();
 			}
 			guessword.actualWord			= word;
