@@ -13,7 +13,7 @@ var   guessword		= {
 	, WORDNIK_DEF_API	= '/word.json/'
 	, WORDNIK_DEF_ARGS	= '/definitions?limit=1&api_key='+WORDNIK_API_KEY+'&callback=?'
 	, WORDNIK_RND		= '/words.json/randomWord?hasDictionaryDef=true' +
-							'&minLength=5&maxLength=5' +
+							'&minLength=5&maxLength=5&minDictionaryCount=3' +
 							'&excludePartOfSpeech=abbreviation,conjunction,affix,suffix' +
 								',noun-posessive,family-name,given-name' +
 								',proper-noun,proper-noun-plural,proper-noun-posessive' +
@@ -94,7 +94,7 @@ $(function() {
 						correct ++;
 						letters.splice(letters.indexOf(letter),1);
 					}
-					// 
+					// put letters in the known/unknown for automatic red/greens
 					if ( -1 < guessword.goodLetters.indexOf(letter) ) {
 						known.push(letter);
 					}else{
