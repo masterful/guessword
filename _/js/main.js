@@ -35,7 +35,7 @@ $(function() {
 		// Stop normal behaviour for now
 		e.preventDefault();
 		var   key		= e.keyCode
-			, input		= $('.guess-word input[value=]')
+			, input		= $('.guess-word input.letter[value=]')
 			, colour
 			, letter , letters
 			, word		= ''
@@ -59,18 +59,28 @@ $(function() {
 						: -1 < guessword.assumedGoodLetters.indexOf(letter) ? 'good'
 						: -1 < guessword.usedLetters.indexOf(letter) ? 'used'
 						: '';
+			console.log(colour);
 			// letter - array the value in:
 			input
 				.first().val(letter)
 				.addClass(colour)
-				.next().focus();
+				.next().addClass('focus')
+				.siblings().removeClass('focus')
+				;
 		}
 		if ( 8 === key ) {
 			// backspace
-			input.first().prev().val('').removeClass('fixed used good bad').focus();
 			if ( ! input.length ) {
 				// full boxes require clearing the last one:
-				$('.guess-word input:last-child').val('').removeClass('fixed used good bad').focus();
+				$('.guess-word input:last-child')
+					.val('')
+					.removeClass('fixed used good bad').addClass('focus')
+					.siblings().removeClass('focus');
+			}else{
+				input.first().prev()
+					.val('')
+					.removeClass('fixed used good bad').addClass('focus')
+					.siblings().removeClass('focus');
 			}
 		}
 		if (13 === key ) {
@@ -80,7 +90,7 @@ $(function() {
 				$('.guess-word .progress').show();
 				// okay - add it to our list with the amount
 				letters	= guessword.actualWord.split('');
-				$('.guess-word input').each(function(i, input) {
+				$('.guess-word input.letter').each(function(i, input) {
 					letter	= $(input).val();
 					colour	= -1 < guessword.badLetters.indexOf(letter) ? ' bad fixed'
 							: -1 < guessword.goodLetters.indexOf(letter) ? ' good fixed'
@@ -100,7 +110,7 @@ $(function() {
 					}else{
 						unknown.push(letter);
 					}
-				}).val('').removeClass('fixed used good bad').first().focus();
+				}).val('').removeClass('focus fixed used good bad').first().addClass('focus');
 				// but is it a valid word?
 				$.ajax({
 					  url		: WORDNIK_URL+WORDNIK_DEF_API+word.toLowerCase()+WORDNIK_DEF_ARGS
@@ -126,7 +136,7 @@ $(function() {
 									correct	= 'Winner!';
 								}
 							}
-							$('.guessed-words tbody').append(
+							$('.guessed-words tbody').prepend(
 								$('<tr>').append(
 										$('<td>').append(guess)
 									).append(
@@ -160,9 +170,11 @@ $(function() {
 				// hmm, perhaps tell them we need a full word
 			}
 		}
-	}).on('click','.letter',function(e) {
+	}).on('click touch','span.letter',function(e) {
 		// Just in case it's a link ?
 		e.preventDefault();
+		e.stopImmediatePropagation();
+		e.stopPropagation();
 		var	  target	= $(e.target)
 			, letter	= target.html();
 		
@@ -259,8 +271,8 @@ function refresh_word() {
 			guessword.assumedBadLetters		= [];
 			guessword.assumedGoodLetters	= [];
 			$('.guessed-words tbody').html('');
-			$('.guess-word input').val('').first().focus();
-			$('.letter').removeClass('fixed used good bad');
+			$('.letter').removeClass('focus fixed used good bad');
+			$('.guess-word input.letter').val('').first().addClass('focus');
 			$('.revealed,.definition').html('');
 			$('.guess-word .progress').hide();
 		}

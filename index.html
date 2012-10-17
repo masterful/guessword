@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 	<title>Guessword</title>
 	<link href="/_/css/main.css" rel="stylesheet" media="all" />
 	<script type="text/javascript" src="/_/js/jquery.min.js"></script>
@@ -15,12 +17,15 @@
 		</section>
 		<section class="guess-word">
 			<form>
-				<div class="input-append">
-					<input type="text" class="letter" autofocus />
-					<input type="text" class="letter" />
-					<input type="text" class="letter" />
-					<input type="text" class="letter" />
-					<input type="text" class="letter" />
+				<div class="input-letters">
+					<div class="input-append">
+						<input type="text" class="focus letter" />
+						<input type="text" class="letter" />
+						<input type="text" class="letter" />
+						<input type="text" class="letter" />
+						<input type="text" class="letter" />
+					</div>
+					<input type="text" class="catcher" autofocus />
 				</div>
 				<div class="buttons">
 					<button class="refresh" type="button">New Game</button>
