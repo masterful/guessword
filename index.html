@@ -4,50 +4,17 @@
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 	<title>Guessword</title>
-	<link href="/_/css/main.css" rel="stylesheet" media="all" />
+	<!-- TypeKit Fonts -->
+	<script src="//use.typekit.net/ckp8wko.js"></script>
+    <script>try{Typekit.load();}catch(e){}</script>
+    <!-- Styling -->
+	<link href="/_/css/main.css" rel="stylesheet" />
 </head>
 <body>
 	<!-- Content -->
-	<div class="container">
-		<header>
-			<h1>Guessword</h1>
-		</header>
-		<section class="alphabet">
-		</section>
-		<section class="guess-word">
-			<form>
-				<div class="input-letters">
-					<div class="input-append">
-						<input type="text" class="focus letter" />
-						<input type="text" class="letter" />
-						<input type="text" class="letter" />
-						<input type="text" class="letter" />
-						<input type="text" class="letter" />
-					</div>
-					<input type="text" class="catcher" autofocus />
-				</div>
-				<div class="buttons">
-					<button class="refresh" type="button">New Game</button>
-					<button class="reveal" type="button">Give Up</button>
-					<span class="revealed"></span><br />
-					<span class="definition"></span>
-				</div>
-			</form>
-			<div class="progress progress-striped active">
-				<div class="bar" style="width: 100%;"></div>
-			</div>
-		</section>
-		<section class="guessed-words">
-			<table>
-				<thead>
-					<tr><th>Word</th>
-						<th>Correct</th></tr>
-				</thead>
-				<tbody>
-				</tbody>
-			</table>
-		</section>
-	</div>
+	<article id="menu"></article>
+	<article id="game"></article>
+	<article id="options"></article>
 	<!-- Scripts -->
 	<script type="text/javascript" src="/_/js/main.min.js"></script>
 </body>
