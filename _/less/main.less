@@ -1,4 +1,17 @@
-@import "bootstrap.less";
+.transition (@which) {
+    -webkit-transition: @which;
+       -moz-transition: @which;
+        -ms-transition: @which;
+         -o-transition: @which;
+            transition: @which;
+}
+.user-select(@what) {
+    -webkit-user-select: @what;
+       -moz-user-select: @what;
+        -ms-user-select: @what;
+         -o-user-select: @what;
+            user-select: @what;
+}
 
 @media (max-width:959px) {
 	.container {
@@ -43,7 +56,7 @@ header h1 {
 			margin: 0 0 0 -50%;
 			padding: 0;
 			border: none;
-			.opacity(0);
+			opacity: 0;
 		}
 	}
 	
@@ -64,17 +77,17 @@ header h1 {
 			border-color: rgba(82,168,236,.8);
 			outline: 0;
 			outline: thin dotted \9; /* IE6-9 */
-			.box-shadow(inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(82,168,236,.6));
+			box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(82,168,236,.6);
 		}
 		
 		&:first-child {
-			.border-top-left-radius(3px);
-			.border-bottom-left-radius(3px);
+			border-top-left-radius: 3px;
+			border-bottom-left-radius: 3px;
 		}
 		&:last-child {
 			border-right-width: 1px;
-			.border-top-right-radius(3px);
-			.border-bottom-right-radius(3px);
+			border-top-right-radius: 3px;
+			border-bottom-right-radius: 3px;
 		}
 	}
 	
@@ -110,6 +123,5 @@ header h1 {
 	&.bad {
 		background: #ff9898;
 		background: #ffb7b7;
-		&.fixed { #gradient > .striped(#ff9898, 135deg); }
 	}
 }
